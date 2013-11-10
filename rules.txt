@@ -1,0 +1,63 @@
+                                                                     
+                                                                     
+                                                                     
+                                             
+fantasy cpu specification
+-------------------------
+
+(1. Memory)
+
+    - RAM : 256 words ( does not really matter. could be infinite)
+    - ROM : 256 words ( does not really matter. could be infinite)
+
+(2. Registers)
+
+    A  : 1 word
+    B  : 1 word
+    C  : 1 word
+    Z  : 1 bit
+    IP : 1 word
+
+    Choose the word size (8bit, 16bit, ..) as you see fit.
+
+(2. Instructions)
+
+    - LOAD  [REG] , [value]        : [REG] <- [value]
+    - LOADM [REG], [address]       : [REG] <- ram[address]
+    - SETM  [address], [REG]       : ram[address] <- reg
+    - ADD   [REG1], [REG2], [REG3] : [REG1] <- [REG2] + [REG3]
+    - SUB   [REG1], [REG2], [REG3] : [REG1] <- [REG2] - [REG3]
+    - OR    [REG], [value]         : [REG] <- [REG] | [value]
+    - XOR   [REG], [value]         : [REG] <- [REG] ^ [value]
+    - AND   [REG], [value]         : [REG] <- [REG] & [value]
+    - CMP [REG], [value]           : Z <- ([REG] == value) ? 1 : 0
+    - JNE [offset]                 : IP <- (Z == 0) ? IP + address : IP + 1
+    - PRINT [REG]                  : print register (without '\n')
+    - STOP                         : stops execution
+
+(3. sample code)
+
+    LOAD A, 1
+    OR A, 8
+    PRINT A
+    XOR A, 42
+    PRINT A
+    XOR A, 42
+    PRINT A
+    LOAD C, 10
+    PRINT C
+    DEC C
+    CMP C, 0
+    JNE -3
+    STOP
+
+output: 935910987654321
+
+(4. rules )
+
+    - Use any programming language you like
+    - Various details are missing here. Just be creative and have fun!
+    - We might try to throw nasty data at your interpreter: Make sure it
+      doesn't just explode in our face. Provide some minimal error handling
+    - The print output needs to happen at runtime
+    - Finish execution with a dump of all register contents (a,b,c,z,ip)
