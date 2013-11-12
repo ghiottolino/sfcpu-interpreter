@@ -72,8 +72,16 @@ public class FantasyCpuInterpret {
 	private void interpretCommand(String command, List<String> params) {
 
 		String reg;
+		String reg2;
+		String reg3;
+
 		String value;
+		String address;
+
 		int registerValue;
+		int registerValue2;
+		int registerValue3;
+
 		int intValue;
 		switch (command) {
 		case "LOAD":
@@ -81,6 +89,60 @@ public class FantasyCpuInterpret {
 			reg = params.get(0);
 			value = params.get(1);
 			setRegister(reg, value);
+			ip = ip + 1;
+			break;
+
+		case "LOADM":
+
+			reg = params.get(0);
+			address = params.get(1);
+			setRegisterFromRam(reg, address);
+			ip = ip + 1;
+			break;
+
+		case "SETM":
+
+			address = params.get(0);
+			reg = params.get(1);
+			setRamFromRegister(address, reg);
+			ip = ip + 1;
+			break;
+
+		case "ADD":
+
+			reg = params.get(0);
+			reg2 = params.get(1);
+			reg3 = params.get(2);
+
+			registerValue2 = getRegister(reg2);
+			registerValue3 = getRegister(reg3);
+			registerValue = registerValue2 + registerValue3;
+
+			setRegister(reg, registerValue);
+			ip = ip + 1;
+			break;
+
+		case "SUB":
+
+			reg = params.get(0);
+			reg2 = params.get(1);
+			reg3 = params.get(2);
+
+			registerValue2 = getRegister(reg2);
+			registerValue3 = getRegister(reg3);
+			registerValue = registerValue2 - registerValue3;
+
+			setRegister(reg, registerValue);
+			ip = ip + 1;
+			break;
+
+		case "AND":
+
+			reg = params.get(0);
+			value = params.get(1);
+			registerValue = getRegister(reg);
+			intValue = Integer.parseInt(value);
+			setRegister(reg, registerValue & intValue);
 			ip = ip + 1;
 			break;
 
@@ -138,6 +200,13 @@ public class FantasyCpuInterpret {
 
 			break;
 
+		case "INC":
+			reg = params.get(0);
+			registerValue = getRegister(reg);
+			setRegister(reg, registerValue + 1);
+			ip = ip + 1;
+			break;
+
 		case "DEC":
 			reg = params.get(0);
 			registerValue = getRegister(reg);
@@ -148,7 +217,7 @@ public class FantasyCpuInterpret {
 		case "STOP":
 			printOverview();
 			System.exit(0);
-			ip = ip + 1;
+			// ip = ip + 1;
 			break;
 
 
@@ -159,6 +228,8 @@ public class FantasyCpuInterpret {
 		}
 
 	}
+
+
 
 	private int getRegister(String reg) {
 		switch (reg) {
@@ -182,6 +253,19 @@ public class FantasyCpuInterpret {
 			break;
 		}
 		return 0;
+
+	}
+
+	private void setRegisterFromRam(String reg, String address) {
+		int intAddress = Integer.parseInt(address);
+		Integer intValue = ram.get(intAddress);
+		setRegister(reg, intValue);
+	}
+
+	private void setRamFromRegister(String address, String reg) {
+		Integer intValue = getRegister(reg);
+		int intAddress = Integer.parseInt(address);
+		ram.put(intAddress, intValue);
 
 	}
 
